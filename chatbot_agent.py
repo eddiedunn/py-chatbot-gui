@@ -6,17 +6,19 @@ from llama_index.tools import BaseTool, FunctionTool
 from langchain.schema import FunctionMessage
 from langchain.memory import ChatMessageHistory
 from typing import Dict
+import os
 
 
 class YourOpenAIAgent:
     def __init__(
         self,
         tools: Sequence[BaseTool] = [],
-        llm: ChatOpenAI = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo-0613"),
+        llm: ChatOpenAI = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo-0613")
     ) -> None:
         self._llm = llm
         self._tools = {tool.metadata.name: tool for tool in tools}
         self._chat_history = ChatMessageHistory()
+        self.print_function_calls = os.environ.get("PRINT_FUNCTION_CALLS", False)
 
 
     def reset(self) -> None:
@@ -32,6 +34,9 @@ class YourOpenAIAgent:
 
         function_call = ai_message.additional_kwargs.get("function_call", None)
         if function_call is not None:
+            if self.print_function_calls:
+                function_call_str = json.dumps(function_call, indent=2)
+                print(f"Function call: {function_call_str}")
             function_message = self._call_function(function_call)
             chat_history.add_message(function_message)
             ai_message = self._llm.predict_messages(chat_history.messages)

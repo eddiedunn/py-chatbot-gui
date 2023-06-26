@@ -3,7 +3,6 @@ from PyQt6.QtGui import QAction
 from chatbot_view import ChatbotView
 from chatbot_agent import YourOpenAIAgent
 from langchain.schema import HumanMessage, AIMessage
-from dotenv import load_dotenv
 import os
 
 class ChatbotController(QMainWindow):
@@ -13,7 +12,6 @@ class ChatbotController(QMainWindow):
         self.chat_agent = chat_agent
         self.setCentralWidget(self.view)  # Set view as central widget
         self.create_menu()  # Create the menu during initialization
-        load_dotenv()
         self.ai_name=os.getenv("AI_NAME")
 
     def create_menu(self):
@@ -52,9 +50,8 @@ class ChatbotController(QMainWindow):
             self.chat_agent.load_chat_history(file_path)
             self.view.conversation_window.clear()
             for message in self.chat_agent._chat_history.messages:
-                print(message)  # Print the message object
-                if isinstance(message, HumanMessage):
+                if isinstance(message, HumanMessage) and message.content.strip() != '':
                     self.view.update_conversation(f"User: {message.content.strip()}")
-                elif isinstance(message, AIMessage):
+                elif isinstance(message, AIMessage) and message.content.strip() != '':
                     self.view.update_conversation(f"{self.ai_name}: {message.content.strip()}")
 

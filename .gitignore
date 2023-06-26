@@ -1,2 +1,3 @@
 .python_version
+.env
 __pycache__

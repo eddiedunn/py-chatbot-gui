@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QApplication
 from chatbot_controller import ChatbotController
 from chatbot_agent import YourOpenAIAgent
 from llama_index.tools import FunctionTool
-
+from dotenv import load_dotenv
 
 def multiply(a: int, b: int) -> int:
     """Multiple two integers and returns the result integer"""
@@ -21,6 +21,7 @@ add_tool = FunctionTool.from_defaults(fn=add)
 
 
 def main():
+    load_dotenv()
     import sys  # Add this import
     app = QApplication(sys.argv)
 
