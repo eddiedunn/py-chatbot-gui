@@ -52,7 +52,9 @@ class ChatbotController(QMainWindow):
             self.chat_agent.load_chat_history(file_path)
             self.view.conversation_window.clear()
             for message in self.chat_agent._chat_history.messages:
+                print(message)  # Print the message object
                 if isinstance(message, HumanMessage):
                     self.view.update_conversation(f"User: {message.content.strip()}")
                 elif isinstance(message, AIMessage):
                     self.view.update_conversation(f"{self.ai_name}: {message.content.strip()}")
+
