@@ -7,6 +7,7 @@ from langchain.schema import FunctionMessage
 from langchain.memory import ChatMessageHistory
 from typing import Dict
 
+
 class YourOpenAIAgent:
     def __init__(
         self,
@@ -16,6 +17,7 @@ class YourOpenAIAgent:
         self._llm = llm
         self._tools = {tool.metadata.name: tool for tool in tools}
         self._chat_history = ChatMessageHistory()
+
 
     def reset(self) -> None:
         self._chat_history.clear()
@@ -45,12 +47,6 @@ class YourOpenAIAgent:
             content=str(output), 
         )
 
-    def add_message(self, message: Dict[str, str]):
-        for key, value in message.items():
-            if key == 'User':
-                self._chat_history.add_user_message(value)
-            elif key == 'Bot':
-                self._chat_history.add_ai_message(value)
 
     def save_chat_history(self, file_path: str):
         with open(file_path, "wb") as file:
