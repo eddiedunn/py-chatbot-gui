@@ -18,7 +18,7 @@ def add(a: int, b: int) -> int:
 add_tool = FunctionTool.from_defaults(fn=add)
 
 
-
+tool_list=[multiply_tool, add_tool]
 
 def main():
     load_dotenv()
@@ -29,7 +29,7 @@ def main():
     multiply_tool = FunctionTool.from_defaults(fn=multiply)
     add_tool = FunctionTool.from_defaults(fn=add)
 
-    chat_agent = YourOpenAIAgent(tools=[multiply_tool, add_tool])
+    chat_agent = YourOpenAIAgent(tools=tool_list)
     controller = ChatbotController(chat_agent)
     controller.show() 
     sys.exit(app.exec())  # Use sys.exit here
